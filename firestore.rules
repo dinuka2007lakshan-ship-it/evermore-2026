@@ -65,7 +65,7 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // A fixed document ID per Google UID and category prevents a second vote.
+    // A fixed document ID per Firebase UID and category prevents a second vote for that guest session.
     // Ballots are private: only the voter who owns a ballot and admins can read them.
     match /ballots/{ballotId} {
       allow get: if isAdmin() ||

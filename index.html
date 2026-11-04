@@ -32,7 +32,7 @@
         <div class="brand"><span class="brand-mark">E</span><span>EVERMORE<br>OFFICIAL AWARDS</span></div>
         <div class="nav-actions">
           <span id="userChip" class="user-chip hidden"></span>
-          <button id="signInBtn" class="btn btn-outline btn-small">Sign in with Google</button>
+          <button id="adminSignInBtn" class="btn btn-outline btn-small">Organiser login</button>
           <button id="signOutBtn" class="btn btn-outline btn-small hidden">Sign out</button>
         </div>
       </div>
@@ -52,7 +52,7 @@
     <section>
       <div class="section-head">
         <div><div class="section-kicker">THE NOMINEES</div><h2>Choose your champions</h2></div>
-        <p class="section-note">Sign in with Google to vote. Each Google account may vote once in each award category.</p>
+        <p class="section-note">No guest login needed. A private guest session starts automatically in this browser.</p>
       </div>
       <div class="category-grid">
         <article class="category-card">
@@ -66,8 +66,8 @@
       </div>
     </section>
 
-    <section id="signInPanel" class="panel">
-      <div class="auth-row"><div class="auth-copy"><strong>Ready to make your choice?</strong><span>Sign in with your Google account. Your email address is not stored with your vote.</span></div><button id="signInBtnMain" class="btn btn-dark">Continue with Google</button></div>
+    <section id="guestSessionPanel" class="panel">
+      <div class="auth-row"><div class="auth-copy"><strong>No sign-in required for guests</strong><span id="guestSessionMessage">Preparing your private guest voting session…</span></div><span class="tag">Guest voting</span></div>
     </section>
 
     <section id="adminPanel" class="panel hidden">
@@ -136,7 +136,7 @@
             list.innerHTML=nominees.map(c=>`<div class="candidate">${candidateImage(c)}<div class="candidate-info"><div class="candidate-name">${escapeHtml(c.name)}</div><div class="candidate-sub">Nominee</div></div><button class="btn btn-gold btn-small" data-vote-category="${category}" data-candidate-id="${escapeHtml(c.id)}" ${(!state.user || !state.settings.votingOpen || state.ballots[category])?'disabled':''}>${state.ballots[category]?'Voted':'Vote'}</button></div>`).join('');
           }
           const voteState=$(category+'VoteState');
-          if (!state.user) voteState.textContent='Sign in with Google to vote.';
+          if (!state.user) voteState.textContent='Preparing your guest session…';
           else if (state.ballots[category]) voteState.textContent='Your vote in this category has been recorded.';
           else if (!state.settings.votingOpen) voteState.textContent='Voting is not open yet.';
           else voteState.textContent='Choose one nominee. Your vote cannot be changed after submission.';
@@ -191,7 +191,7 @@
       }
 
       async function castVote(category,candidateId) {
-        if (!state.user) { toast('Please sign in with Google first.'); return; }
+        if (!state.user) { toast('Your guest session is still starting. Please try again in a moment.'); return; }
         if (!state.settings.votingOpen) { toast('Voting is currently closed.'); return; }
         if (state.ballots[category]) { toast('You have already voted in this category.'); return; }
         const candidate=candidateById(candidateId);
@@ -302,11 +302,16 @@
 
       async function onSignedIn(user) {
         state.user=user;
-        $('signInBtn').classList.add('hidden'); $('signInBtnMain').classList.add('hidden'); $('signOutBtn').classList.remove('hidden'); $('signInPanel').classList.add('hidden');
         const adminSnap=await state.db.collection('admins').doc(user.uid).get();
-        state.isAdmin=adminSnap.exists;
+        state.isAdmin=!user.isAnonymous && adminSnap.exists;
+        $('adminSignInBtn').classList.toggle('hidden',state.isAdmin);
+        $('signOutBtn').classList.toggle('hidden',!state.isAdmin);
         const chip=$('userChip'); chip.classList.remove('hidden');
-        chip.innerHTML=`${user.photoURL?`<img src="${escapeHtml(user.photoURL)}" alt="">`:''}<span>${escapeHtml(user.displayName||'Signed in')}</span>`;
+        const label=user.isAnonymous?'Guest session':(user.displayName||'Organiser account');
+        chip.innerHTML=`${user.photoURL?`<img src="${escapeHtml(user.photoURL)}" alt="">`:''}<span>${escapeHtml(label)}</span>`;
+        $('guestSessionMessage').textContent=user.isAnonymous
+          ? 'You are ready to vote. No account, email address or password is needed.'
+          : (state.isAdmin?'Organiser account connected. Guests can vote without signing in.':'Session active. Guests can vote without signing in.');
         if (state.isAdmin) await ensureSettings();
         await refreshMyBallots();
         renderCandidates(); renderAdmin();
@@ -315,20 +320,44 @@
 
       function onSignedOut() {
         state.user=null; state.isAdmin=false; state.ballots={mr:false,ms:false};
-        $('signInBtn').classList.remove('hidden'); $('signInBtnMain').classList.remove('hidden'); $('signOutBtn').classList.add('hidden'); $('userChip').classList.add('hidden'); $('signInPanel').classList.remove('hidden');
+        $('adminSignInBtn').classList.remove('hidden'); $('signOutBtn').classList.add('hidden'); $('userChip').classList.add('hidden');
+        $('guestSessionMessage').textContent='Preparing your private guest voting session…';
         $('adminPanel').classList.add('hidden');
         renderCandidates();
         if (!state.settings.showResults) $('resultsPanel').classList.add('hidden');
       }
 
-      async function signIn() {
-        try { const provider=new firebase.auth.GoogleAuthProvider(); await state.auth.signInWithPopup(provider); }
+      let anonymousSignInPending=false;
+      async function startGuestSession() {
+        if (state.auth.currentUser || anonymousSignInPending) return;
+        anonymousSignInPending=true;
+        try {
+          await state.auth.signInAnonymously();
+        } catch(error) {
+          console.error('Anonymous guest sign-in failed:',error);
+          const message=error.code==='auth/operation-not-allowed'
+            ? 'Guest access is not enabled yet. In Firebase, open Authentication → Sign-in method → Anonymous, enable it, save, then reload this page.'
+            : error.code==='auth/unauthorized-domain'
+              ? 'This website address is not authorised. Add your GitHub Pages domain under Firebase Authentication → Settings → Authorized domains.'
+              : 'Could not start guest voting. Check your internet connection and Firebase Authentication settings, then reload.';
+          $('guestSessionMessage').textContent=message;
+          toast('Guest voting could not start. Check the setup message below.');
+        } finally {
+          anonymousSignInPending=false;
+        }
+      }
+
+      async function signInAdmin() {
+        const provider=new firebase.auth.GoogleAuthProvider();
+        try { await state.auth.signInWithPopup(provider); }
         catch(error) {
           console.error(error);
-          if (error.code==='auth/popup-blocked') { try { await state.auth.signInWithRedirect(provider); } catch (redirectError) { console.error(redirectError); toast('Google sign-in could not open. Please try again.'); } }
-          else if (error.code==='auth/popup-closed-by-user') toast('Sign-in was closed before it finished. Please try again.');
-          else if (error.code==='auth/unauthorized-domain') toast('This website domain is not authorised in Firebase Authentication settings yet.');
-          else toast('Google sign-in failed. Please try again.');
+          if (error.code==='auth/popup-blocked') {
+            try { await state.auth.signInWithRedirect(provider); }
+            catch (redirectError) { console.error(redirectError); toast('Organiser sign-in could not open. Please try again.'); }
+          } else if (error.code==='auth/popup-closed-by-user') toast('Organiser sign-in was cancelled.');
+          else if (error.code==='auth/unauthorized-domain') toast('Add your website domain in Firebase Authentication → Settings → Authorized domains.');
+          else toast('Organiser sign-in failed. Check that Google sign-in is enabled in Firebase.');
         }
       }
 
@@ -339,7 +368,7 @@
           $('statusText').textContent='Setup required';
           $('mrCandidates').innerHTML='<div class="empty">The organiser must connect this website to Firebase before voting can begin.</div>';
           $('msCandidates').innerHTML='<div class="empty">The organiser must connect this website to Firebase before voting can begin.</div>';
-          $('signInPanel').innerHTML='<strong>Website setup needed</strong><p class="muted">Add the Firebase web configuration to firebase-config.js, then publish the site. Follow the included README.</p>';
+          $('guestSessionPanel').innerHTML='<strong>Website setup needed</strong><p class="muted">Add the Firebase web configuration to firebase-config.js, then publish the site. Follow the included README.</p>';
           return;
         }
         try {
@@ -357,16 +386,16 @@
             state.candidates=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
             renderCandidates(); if (state.isAdmin) renderAdminCandidates();
           },error=>console.warn('Candidates listener:',error));
-          $('signInBtn').addEventListener('click',signIn); $('signInBtnMain').addEventListener('click',signIn);
+          $('adminSignInBtn').addEventListener('click',signInAdmin);
           $('signOutBtn').addEventListener('click',()=>state.auth.signOut());
           $('candidateForm').addEventListener('submit',addCandidate);
           $('toggleVotingBtn').addEventListener('click',toggleVoting);
           $('publishResultsBtn').addEventListener('click',publishResults);
           $('copyUrlBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('siteUrl').textContent);toast('Website link copied.');}catch(e){toast('Copy not available in this browser.');}});
-          state.auth.onAuthStateChanged(async user=>{try{if(user) await onSignedIn(user);else onSignedOut();}catch(error){console.error(error);toast('Could not load your account permissions.');}});
+          state.auth.onAuthStateChanged(async user=>{try{if(user) await onSignedIn(user);else { onSignedOut(); await startGuestSession(); }}catch(error){console.error(error);toast('Could not load your account permissions.');}});
         } catch(error) {
           console.error(error); $('statusText').textContent='Connection error';
-          $('signInPanel').innerHTML='<strong>Could not connect to Firebase.</strong><p class="muted">Check your Firebase settings in firebase-config.js and reload the page.</p>';
+          $('guestSessionPanel').innerHTML='<strong>Could not connect to Firebase.</strong><p class="muted">Check your Firebase settings in firebase-config.js and reload the page.</p>';
         }
       }
       document.addEventListener('DOMContentLoaded',init);

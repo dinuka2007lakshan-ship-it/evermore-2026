@@ -32,7 +32,7 @@
         <div class="brand"><span class="brand-mark">E</span><span>EVERMORE<br>OFFICIAL AWARDS</span></div>
         <div class="nav-actions">
           <span id="userChip" class="user-chip hidden"></span>
-          <button id="adminSignInBtn" class="btn btn-outline btn-small">Organiser login</button>
+          <button id="adminSignInBtn" class="btn btn-outline btn-small" title="Optional: organiser access only">Admin access</button>
           <button id="signOutBtn" class="btn btn-outline btn-small hidden">Sign out</button>
         </div>
       </div>
@@ -301,9 +301,20 @@
       }
 
       async function onSignedIn(user) {
+        // Guests use anonymous auth. A previously saved, non-admin Google session
+        // must not block guest voting; send it back to the anonymous guest flow.
+        if (!user.isAnonymous) {
+          const adminSnap=await state.db.collection('admins').doc(user.uid).get();
+          if (!adminSnap.exists) {
+            $('guestSessionMessage').textContent='This account is not registered as an organiser. Switching to guest voting…';
+            await state.auth.signOut();
+            return;
+          }
+          state.isAdmin=true;
+        } else {
+          state.isAdmin=false;
+        }
         state.user=user;
-        const adminSnap=await state.db.collection('admins').doc(user.uid).get();
-        state.isAdmin=!user.isAnonymous && adminSnap.exists;
         $('adminSignInBtn').classList.toggle('hidden',state.isAdmin);
         $('signOutBtn').classList.toggle('hidden',!state.isAdmin);
         const chip=$('userChip'); chip.classList.remove('hidden');

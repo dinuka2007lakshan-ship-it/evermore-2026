@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function validCategory(category) {
+      return category == 'mr' || category == 'ms';
+    }
+
+    function votingIsOpen() {
+      return exists(/databases/$(database)/documents/settings/main) &&
+        get(/databases/$(database)/documents/settings/main).data.votingOpen == true;
+    }
+
+    function validCandidate(candidateId, category) {
+      return exists(/databases/$(database)/documents/candidates/$(candidateId)) &&
+        get(/databases/$(database)/documents/candidates/$(candidateId)).data.category == category &&
+        get(/databases/$(database)/documents/candidates/$(candidateId)).data.active == true;
+    }
+
+    // Admin UID documents are created manually in the Firebase Console.
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, create, update, delete: if false;
+    }
+
+    // Publicly readable event status. Only an admin can change it.
+    match /settings/{settingId} {
+      allow get: if settingId == 'main';
+      allow list: if false;
+      allow create, update: if isAdmin() && settingId == 'main' &&
+        request.resource.data.keys().hasOnly(['votingOpen', 'showResults', 'updatedAt']) &&
+        request.resource.data.keys().hasAll(['votingOpen', 'showResults']) &&
+        request.resource.data.votingOpen is bool &&
+        request.resource.data.showResults is bool;
+      allow delete: if false;
+    }
+
+    // Candidate names and optional HTTPS photo URLs are public; only admins edit them.
+    match /candidates/{candidateId} {
+      allow get, list: if true;
+      allow create: if isAdmin() &&
+        request.resource.data.keys().hasOnly(['category', 'name', 'photoUrl', 'active', 'createdAt']) &&
+        request.resource.data.keys().hasAll(['category', 'name', 'active']) &&
+        validCategory(request.resource.data.category) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 2 &&
+        request.resource.data.name.size() <= 70 &&
+        request.resource.data.active == true &&
+        (!('photoUrl' in request.resource.data) ||
+          (request.resource.data.photoUrl is string &&
+           request.resource.data.photoUrl.size() <= 500 &&
+           request.resource.data.photoUrl.matches('https://.*')));
+      // Candidates are archived, not deleted, so existing ballots can still be counted.
+      allow update: if isAdmin() &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['active']) &&
+        request.resource.data.active is bool;
+      allow delete: if false;
+    }
+
+    // A fixed document ID per Google UID and category prevents a second vote.
+    // Ballots are private: only the voter who owns a ballot and admins can read them.
+    match /ballots/{ballotId} {
+      allow get: if isAdmin() ||
+        (signedIn() && (ballotId == request.auth.uid + '_mr' ||
+                        ballotId == request.auth.uid + '_ms'));
+      allow list: if isAdmin();
+      allow create: if signedIn() &&
+        ballotId == request.auth.uid + '_' + request.resource.data.category &&
+        request.resource.data.keys().hasOnly(['voterUid', 'category', 'candidateId', 'createdAt']) &&
+        request.resource.data.keys().hasAll(['voterUid', 'category', 'candidateId', 'createdAt']) &&
+        request.resource.data.voterUid == request.auth.uid &&
+        validCategory(request.resource.data.category) &&
+        request.resource.data.candidateId is string &&
+        request.resource.data.createdAt == request.time &&
+        votingIsOpen() &&
+        validCandidate(request.resource.data.candidateId, request.resource.data.category);
+      allow update, delete: if false;
+    }
+
+    // Only aggregate results are public, and only after the organiser publishes them.
+    match /results/{resultId} {
+      allow get: if isAdmin() ||
+        (resultId == 'main' &&
+         exists(/databases/$(database)/documents/settings/main) &&
+         get(/databases/$(database)/documents/settings/main).data.showResults == true);
+      allow list: if false;
+      allow create, update: if isAdmin() && resultId == 'main';
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

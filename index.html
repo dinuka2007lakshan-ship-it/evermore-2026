@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17152b">
+  <meta name="description" content="EVERMORE 2026 official party awards voting platform.">
+  <title>EVERMORE 2026 — Official Awards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#19172b;--muted:#77758a;--gold:#d8b56d;--gold2:#f0d9a4;--paper:#fbf9f4;--line:#e9e3d7;--plum:#28223d;--green:#287c59;--red:#b94d55;--shadow:0 18px 55px rgba(37,29,54,.09)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.5}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+    .hero{position:relative;overflow:hidden;background:radial-gradient(circle at 85% 15%,rgba(216,181,109,.18),transparent 28%),linear-gradient(135deg,#17152b,#312442 65%,#47334b);color:white;padding:26px 0 58px}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{display:flex;gap:11px;align-items:center;font-size:13px;font-weight:800;letter-spacing:.16em}.brand-mark{width:34px;height:34px;border:1px solid rgba(240,217,164,.7);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-family:'Playfair Display';font-size:20px}.nav-actions{display:flex;gap:10px;align-items:center}.hero-content{text-align:center;padding:58px 0 8px}.eyebrow{color:var(--gold2);font-size:11px;letter-spacing:.28em;font-weight:800}.hero h1{font-family:'Playfair Display',serif;font-size:clamp(48px,9vw,92px);line-height:1.02;margin:15px 0 12px;letter-spacing:.035em;color:#f7e9c9}.hero-sub{font-size:14px;letter-spacing:.16em;color:#e1d8e6}.hero-rule{height:1px;width:100px;background:var(--gold);margin:25px auto}.hero-copy{max-width:570px;margin:0 auto;color:#e5dfea;font-size:15px}
+    .btn{border:0;border-radius:999px;padding:12px 19px;font-weight:700;transition:transform .15s,opacity .15s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn-gold{background:linear-gradient(135deg,#f1dba8,#cda65b);color:#241d2e}.btn-light{background:#fff;color:var(--ink)}.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.32);color:#fff}.btn-dark{background:var(--plum);color:#fff}.btn-soft{background:#f3eee4;color:#40364b}.btn-danger{background:#fff0ef;color:#a63c44}.btn-small{padding:8px 13px;font-size:12px}
+    main{padding:34px 0 68px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:15px 0 17px}.section-kicker{font-size:10px;letter-spacing:.2em;color:#a48a5a;font-weight:800}.section-head h2{font-family:'Playfair Display',serif;font-size:29px;margin:4px 0 0}.section-note{font-size:13px;color:var(--muted);max-width:420px}
+    .statusbar{display:flex;justify-content:center;align-items:center;gap:9px;margin:-19px auto 25px;position:relative}.status-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;background:white;border:1px solid var(--line);box-shadow:0 5px 22px rgba(0,0,0,.06);border-radius:999px;font-size:12px;font-weight:700}.dot{width:7px;height:7px;border-radius:50%;background:#999}.dot.open{background:#3ba878;box-shadow:0 0 0 4px rgba(59,168,120,.12)}
+    .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.category-card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.category-top{padding:22px 23px 19px;background:linear-gradient(130deg,#f3ead8,#fffaf1);display:flex;align-items:center;gap:16px}.crown{width:54px;height:54px;border-radius:17px;background:var(--plum);display:grid;place-items:center;color:var(--gold2);font-size:24px;flex:none}.category-top h3{font-family:'Playfair Display',serif;font-size:22px;margin:0}.category-top p{font-size:11px;color:#8c7a61;margin:3px 0 0;letter-spacing:.08em}.category-body{padding:19px 22px 22px}.candidate-list{display:grid;gap:10px}.candidate{display:flex;align-items:center;gap:12px;padding:11px;border:1px solid #eee9e1;border-radius:14px;background:#fff}.candidate img,.avatar-fallback{height:46px;width:46px;border-radius:12px;object-fit:cover;background:#efe8dc;flex:none}.avatar-fallback{display:grid;place-items:center;color:#8e7955;font-weight:800;font-size:18px}.candidate-info{flex:1;min-width:0}.candidate-name{font-weight:700;font-size:14px;overflow-wrap:anywhere}.candidate-sub{color:var(--muted);font-size:11px}.candidate button{white-space:nowrap}.empty{padding:18px;text-align:center;color:var(--muted);background:#faf8f4;border:1px dashed #ddd5c7;border-radius:13px;font-size:13px}
+    .panel{margin-top:28px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.panel-head h2,.panel h3{font-family:'Playfair Display',serif;margin:0}.panel-head h2{font-size:24px}.panel p.muted,.muted{color:var(--muted);font-size:13px}.hidden{display:none!important}.auth-row{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.auth-copy{max-width:580px}.auth-copy strong{display:block;margin-bottom:4px}.auth-copy span{font-size:13px;color:var(--muted)}.user-chip{display:inline-flex;align-items:center;gap:9px;background:#f7f4ee;border-radius:999px;padding:6px 12px 6px 7px;font-size:12px;font-weight:700}.user-chip img{width:26px;height:26px;border-radius:50%}
+    .admin-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}.form-grid{display:grid;gap:11px}.field{display:grid;gap:6px}.field label{font-size:11px;font-weight:800;letter-spacing:.08em;color:#6e6673;text-transform:uppercase}.field input,.field select{width:100%;border:1px solid #e4ded4;border-radius:11px;padding:12px 13px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus{border-color:#b99a5f;box-shadow:0 0 0 3px rgba(216,181,109,.15)}.form-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.admin-candidate{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ece5}.admin-candidate:last-child{border-bottom:0}.admin-candidate .candidate-info{flex:1}.admin-actions{display:flex;gap:7px;align-items:center}.tag{font-size:10px;text-transform:uppercase;letter-spacing:.09em;padding:4px 8px;border-radius:99px;background:#f3efe7;color:#827050;font-weight:800}.tag.off{background:#fceeed;color:#a14b4c}
+    .admin-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.notice{padding:12px 14px;background:#f9f5ea;border:1px solid #eadfc7;color:#6f5c36;border-radius:12px;font-size:12px;margin:12px 0}.notice.error{background:#fff1f0;border-color:#f0d0ce;color:#9e4444}.notice.success{background:#eef8f2;border-color:#cde8d7;color:#276b49}.qr-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.qr-box{padding:10px;border:1px solid var(--line);border-radius:14px;background:white;width:154px;height:154px;display:grid;place-items:center}.qr-box img{max-width:132px}.qr-copy{flex:1;min-width:180px}.qr-copy strong{display:block}.qr-copy p{font-size:12px;color:var(--muted)}.url-copy{font-size:11px;color:#786d80;overflow-wrap:anywhere;background:#f8f6f1;padding:9px 11px;border-radius:9px}
+    .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.result-card{padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}.result-card h3{font-family:'Playfair Display',serif;margin:0 0 14px}.result-row{margin:12px 0}.result-meta{display:flex;justify-content:space-between;gap:10px;font-size:12px}.bar{height:8px;border-radius:50px;background:#f0ece5;overflow:hidden;margin-top:6px}.bar span{display:block;height:100%;background:linear-gradient(90deg,#b78e4d,#ead5a2);border-radius:50px}.winner{color:#987338;font-weight:800}.footer{background:#17152b;color:#cfc7d5;padding:28px 0;text-align:center;font-size:11px;letter-spacing:.08em}.footer strong{color:#eddbb5}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:all .2s;background:#211c32;color:#fff;border-radius:999px;padding:12px 17px;font-size:12px;box-shadow:0 9px 28px rgba(0,0,0,.2);z-index:20;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.loading{color:var(--muted);font-size:13px;padding:15px 0}
+    @media(max-width:760px){.category-grid,.admin-layout,.results-grid{grid-template-columns:1fr}.hero-content{padding-top:45px}.section-head{display:block}.section-note{margin-top:8px}.panel{padding:18px}.nav{align-items:flex-start}.nav-actions{flex-direction:column;align-items:flex-end}.brand{font-size:11px}.hero{padding-bottom:47px}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="nav">
+        <div class="brand"><span class="brand-mark">E</span><span>EVERMORE<br>OFFICIAL AWARDS</span></div>
+        <div class="nav-actions">
+          <span id="userChip" class="user-chip hidden"></span>
+          <button id="signInBtn" class="btn btn-outline btn-small">Sign in with Google</button>
+          <button id="signOutBtn" class="btn btn-outline btn-small hidden">Sign out</button>
+        </div>
+      </div>
+      <div class="hero-content">
+        <div class="eyebrow">THE CELEBRATION · THE RECOGNITION</div>
+        <h1>EVERMORE 2026</h1>
+        <div class="hero-sub">OFFICIAL PARTY AWARDS &amp; VOTING</div>
+        <div class="hero-rule"></div>
+        <p class="hero-copy">Celebrate the people who make every moment unforgettable. Meet the nominees and cast your vote.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="statusbar"><span class="status-pill"><span id="statusDot" class="dot"></span><span id="statusText">Checking voting status…</span></span></div>
+
+    <section>
+      <div class="section-head">
+        <div><div class="section-kicker">THE NOMINEES</div><h2>Choose your champions</h2></div>
+        <p class="section-note">Sign in with Google to vote. Each Google account may vote once in each award category.</p>
+      </div>
+      <div class="category-grid">
+        <article class="category-card">
+          <div class="category-top"><div class="crown">♛</div><div><h3>MR. EVERMORE</h3><p>THE GENTLEMEN'S AWARD</p></div></div>
+          <div class="category-body"><div id="mrCandidates" class="candidate-list"><div class="loading">Loading nominees…</div></div><div id="mrVoteState" class="muted" style="margin-top:12px"></div></div>
+        </article>
+        <article class="category-card">
+          <div class="category-top"><div class="crown">♕</div><div><h3>MS. EVERMORE</h3><p>THE LADIES' AWARD</p></div></div>
+          <div class="category-body"><div id="msCandidates" class="candidate-list"><div class="loading">Loading nominees…</div></div><div id="msVoteState" class="muted" style="margin-top:12px"></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="signInPanel" class="panel">
+      <div class="auth-row"><div class="auth-copy"><strong>Ready to make your choice?</strong><span>Sign in with your Google account. Your email address is not stored with your vote.</span></div><button id="signInBtnMain" class="btn btn-dark">Continue with Google</button></div>
+    </section>
+
+    <section id="adminPanel" class="panel hidden">
+      <div class="panel-head"><div><div class="section-kicker">ORGANISER AREA</div><h2>Admin dashboard</h2></div><span class="tag">Admin access</span></div>
+      <p class="muted">Add nominees before opening voting. Once voting is open, the nominee list is locked to keep the process fair.</p>
+      <div id="adminNotice" class="notice hidden"></div>
+      <div class="admin-layout">
+        <div>
+          <h3 style="font-size:19px;margin-bottom:14px">Add a nominee</h3>
+          <form id="candidateForm" class="form-grid">
+            <div class="field"><label for="candidateCategory">Award category</label><select id="candidateCategory"><option value="mr">MR. EVERMORE</option><option value="ms">MS. EVERMORE</option></select></div>
+            <div class="field"><label for="candidateName">Candidate name</label><input id="candidateName" maxlength="70" minlength="2" required placeholder="Enter full name"></div>
+            <div class="field"><label for="candidatePhoto">Photo URL (optional)</label><input id="candidatePhoto" type="url" placeholder="https://…"></div>
+            <div class="form-actions"><button id="addCandidateBtn" class="btn btn-dark" type="submit">Add candidate</button></div>
+          </form>
+        </div>
+        <div>
+          <h3 style="font-size:19px;margin-bottom:14px">Voting controls</h3>
+          <p id="adminVotingSummary" class="muted">Loading event settings…</p>
+          <div class="admin-controls"><button id="toggleVotingBtn" class="btn btn-gold" disabled>Open voting</button><button id="publishResultsBtn" class="btn btn-soft" disabled>Publish results</button></div>
+          <div class="notice">Publishing results makes the category totals visible to everyone. Individual ballots remain private.</div>
+        </div>
+      </div>
+      <div style="margin-top:26px"><h3 style="font-size:19px;margin-bottom:10px">Manage nominees</h3><div id="adminCandidates"><div class="loading">Loading nominees…</div></div></div>
+      <div style="margin-top:25px;border-top:1px solid var(--line);padding-top:22px">
+        <div class="panel-head"><h3 style="font-size:19px">Guest QR code</h3><span class="tag">Share with guests</span></div>
+        <div class="qr-wrap"><div id="qrCode" class="qr-box"></div><div class="qr-copy"><strong>Scan to open EVERMORE 2026</strong><p>Guests can scan this code to open the voting website on their phones.</p><div id="siteUrl" class="url-copy"></div><button id="copyUrlBtn" class="btn btn-soft btn-small" style="margin-top:10px">Copy website link</button></div></div>
+      </div>
+    </section>
+
+    <section id="resultsPanel" class="panel hidden">
+      <div class="panel-head"><div><div class="section-kicker">THE FINAL COUNT</div><h2>EVERMORE 2026 results</h2></div><span class="tag">Official results</span></div>
+      <div id="resultsContent" class="results-grid"></div>
+      <p id="resultsFootnote" class="muted" style="margin-top:15px">Results published by the event organiser.</p>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap"><strong>EVERMORE 2026</strong><br>MADE FOR THE MOMENTS THAT LAST</div></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const state = { user: null, isAdmin: false, settings: { votingOpen: false, showResults: false }, candidates: [], ballots: { mr: false, ms: false }, result: null, db: null, auth: null };
+      const categories = { mr: 'MR. EVERMORE', ms: 'MS. EVERMORE' };
+      let toastTimer;
+      const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      function toast(message) { const el=$('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
+      function showNotice(message, type='') { const el=$('adminNotice'); el.textContent=message; el.className='notice'+(type?' '+type:''); el.classList.remove('hidden'); }
+      function hideNotice() { $('adminNotice').classList.add('hidden'); }
+      function setStatus() { const isOpen=state.settings.votingOpen; $('statusDot').className='dot'+(isOpen?' open':''); $('statusText').textContent=isOpen?'Voting is open':'Voting is closed'; }
+      function candidateById(id) { return state.candidates.find(c=>c.id===id); }
+      function initials(name) { return String(name||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase(); }
+      function candidateImage(c) { return c.photoUrl ? `<img src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="avatar-fallback" hidden>${escapeHtml(initials(c.name))}</div>` : `<div class="avatar-fallback">${escapeHtml(initials(c.name))}</div>`; }
+
+      function renderCandidates() {
+        ['mr','ms'].forEach(category => {
+          const list=$(category+'Candidates');
+          const nominees=state.candidates.filter(c=>c.category===category && c.active);
+          if (!nominees.length) { list.innerHTML='<div class="empty">Nominees will be added by the organiser during the party.</div>'; }
+          else {
+            list.innerHTML=nominees.map(c=>`<div class="candidate">${candidateImage(c)}<div class="candidate-info"><div class="candidate-name">${escapeHtml(c.name)}</div><div class="candidate-sub">Nominee</div></div><button class="btn btn-gold btn-small" data-vote-category="${category}" data-candidate-id="${escapeHtml(c.id)}" ${(!state.user || !state.settings.votingOpen || state.ballots[category])?'disabled':''}>${state.ballots[category]?'Voted':'Vote'}</button></div>`).join('');
+          }
+          const voteState=$(category+'VoteState');
+          if (!state.user) voteState.textContent='Sign in with Google to vote.';
+          else if (state.ballots[category]) voteState.textContent='Your vote in this category has been recorded.';
+          else if (!state.settings.votingOpen) voteState.textContent='Voting is not open yet.';
+          else voteState.textContent='Choose one nominee. Your vote cannot be changed after submission.';
+        });
+        document.querySelectorAll('[data-vote-category]').forEach(btn=>btn.addEventListener('click',()=>castVote(btn.dataset.voteCategory,btn.dataset.candidateId)));
+      }
+
+      function renderAdminCandidates() {
+        const el=$('adminCandidates');
+        if (!state.candidates.length) { el.innerHTML='<div class="empty">No candidates have been added yet.</div>'; return; }
+        el.innerHTML=state.candidates.map(c=>`<div class="admin-candidate">${candidateImage(c)}<div class="candidate-info"><div class="candidate-name">${escapeHtml(c.name)}</div><div class="candidate-sub">${categories[c.category]||c.category}</div></div><span class="tag ${c.active?'':'off'}">${c.active?'Active':'Archived'}</span>${!state.settings.votingOpen?`<div class="admin-actions"><button class="btn btn-soft btn-small" data-toggle-candidate="${escapeHtml(c.id)}" data-active="${c.active?'true':'false'}">${c.active?'Archive':'Restore'}</button></div>`:''}</div>`).join('');
+        document.querySelectorAll('[data-toggle-candidate]').forEach(btn=>btn.addEventListener('click',()=>toggleCandidate(btn.dataset.toggleCandidate,btn.dataset.active!=='true')));
+      }
+
+      function renderAdmin() {
+        $('adminPanel').classList.toggle('hidden',!state.isAdmin);
+        if (!state.isAdmin) return;
+        $('adminVotingSummary').textContent=state.settings.votingOpen?'Voting is OPEN. Guests can submit one vote in each category.':'Voting is CLOSED. You can add or archive nominees before opening voting.';
+        $('toggleVotingBtn').textContent=state.settings.votingOpen?'Close voting':'Open voting';
+        $('toggleVotingBtn').disabled=false;
+        $('addCandidateBtn').disabled=state.settings.votingOpen;
+        $('candidateName').disabled=state.settings.votingOpen;
+        $('candidateCategory').disabled=state.settings.votingOpen;
+        $('candidatePhoto').disabled=state.settings.votingOpen;
+        $('publishResultsBtn').disabled=state.settings.votingOpen;
+        $('publishResultsBtn').textContent=state.settings.showResults?'Republish results':'Publish results';
+        renderAdminCandidates();
+      }
+
+      function renderResults(result) {
+        const panel=$('resultsPanel');
+        const canSee=!!(state.settings.showResults && result);
+        panel.classList.toggle('hidden',!canSee);
+        if (!canSee) return;
+        $('resultsContent').innerHTML=['mr','ms'].map(category=>{
+          const items=(result.categories && result.categories[category]) || [];
+          const max=Math.max(1,...items.map(i=>Number(i.votes)||0));
+          const sorted=[...items].sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
+          const top=sorted.length?Number(sorted[0].votes)||0:0;
+          return `<div class="result-card"><h3>${categories[category]}</h3>${sorted.length?sorted.map(item=>`<div class="result-row"><div class="result-meta"><span class="${Number(item.votes)===top?'winner':''}">${escapeHtml(item.name)}${Number(item.votes)===top?' ★':''}</span><strong>${Number(item.votes)||0}</strong></div><div class="bar"><span style="width:${Math.max(0,Math.min(100,((Number(item.votes)||0)/max)*100))}%"></span></div></div>`).join(''):'<div class="empty">No results available.</div>'}<div class="candidate-sub" style="margin-top:13px">${sorted.reduce((n,x)=>n+(Number(x.votes)||0),0)} votes recorded</div></div>`;
+        }).join('');
+      }
+
+      async function refreshMyBallots() {
+        state.ballots={mr:false,ms:false};
+        if (!state.user) return;
+        for (const category of ['mr','ms']) {
+          const id=state.user.uid+'_'+category;
+          const snap=await state.db.collection('ballots').doc(id).get();
+          state.ballots[category]=snap.exists;
+        }
+      }
+
+      async function castVote(category,candidateId) {
+        if (!state.user) { toast('Please sign in with Google first.'); return; }
+        if (!state.settings.votingOpen) { toast('Voting is currently closed.'); return; }
+        if (state.ballots[category]) { toast('You have already voted in this category.'); return; }
+        const candidate=candidateById(candidateId);
+        if (!candidate || !candidate.active || candidate.category!==category) { toast('That nominee is no longer available.'); return; }
+        if (!confirm(`Cast your vote for ${candidate.name} in ${categories[category]}? You cannot change it later.`)) return;
+        try {
+          await state.db.collection('ballots').doc(state.user.uid+'_'+category).set({
+            voterUid: state.user.uid,
+            category,
+            candidateId,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          state.ballots[category]=true;
+          renderCandidates();
+          toast('Your vote has been recorded. Thank you!');
+        } catch (error) {
+          console.error(error);
+          if (error.code==='permission-denied') toast('Vote not accepted. You may have already voted or voting may have closed.');
+          else toast('Could not submit your vote. Please check your connection and try again.');
+        }
+      }
+
+      async function addCandidate(event) {
+        event.preventDefault();
+        if (!state.isAdmin) return;
+        if (state.settings.votingOpen) { showNotice('Close voting before changing the nominee list.','error'); return; }
+        const category=$('candidateCategory').value;
+        const name=$('candidateName').value.trim();
+        const photoUrl=$('candidatePhoto').value.trim();
+        if (name.length<2) { showNotice('Please enter a candidate name with at least 2 characters.','error'); return; }
+        if (photoUrl && !photoUrl.startsWith('https://')) { showNotice('Photo URLs must start with https://','error'); return; }
+        const data={category,name,active:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+        if (photoUrl) data.photoUrl=photoUrl;
+        try {
+          await state.db.collection('candidates').add(data);
+          $('candidateForm').reset();
+          hideNotice();
+          toast('Candidate added successfully.');
+        } catch (error) { console.error(error); showNotice('Could not add candidate. Check your admin access and Firestore rules.','error'); }
+      }
+
+      async function toggleCandidate(id, active) {
+        if (!state.isAdmin || state.settings.votingOpen) return;
+        try { await state.db.collection('candidates').doc(id).update({active}); toast(active?'Candidate restored.':'Candidate archived.'); }
+        catch (error) { console.error(error); toast('Could not update the candidate.'); }
+      }
+
+      async function ensureSettings() {
+        const ref=state.db.collection('settings').doc('main');
+        const snap=await ref.get();
+        if (!snap.exists && state.isAdmin) await ref.set({votingOpen:false,showResults:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+      }
+
+      async function toggleVoting() {
+        if (!state.isAdmin) return;
+        const next=!state.settings.votingOpen;
+        if (next) {
+          const mr=state.candidates.some(c=>c.category==='mr'&&c.active);
+          const ms=state.candidates.some(c=>c.category==='ms'&&c.active);
+          if (!mr || !ms) { showNotice('Add at least one active nominee in BOTH award categories before opening voting.','error'); return; }
+          if (!confirm('Open voting for all guests now? The nominee list will be locked.')) return;
+        } else if (!confirm('Close voting now? Guests will no longer be able to submit votes.')) return;
+        try {
+          await state.db.collection('settings').doc('main').set({votingOpen:next,showResults:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+          hideNotice();
+          toast(next?'Voting is now open.':'Voting is now closed.');
+        } catch (error) { console.error(error); showNotice('Could not change voting status. Check Firestore setup and admin permissions.','error'); }
+      }
+
+      async function publishResults() {
+        if (!state.isAdmin || state.settings.votingOpen) { showNotice('Close voting before publishing the results.','error'); return; }
+        if (!confirm('Publish the final totals? Everyone visiting the website will be able to see the results.')) return;
+        try {
+          const [ballotsSnap,candidatesSnap]=await Promise.all([
+            state.db.collection('ballots').get(),
+            state.db.collection('candidates').get()
+          ]);
+          const totals={mr:[],ms:[]};
+          const counts={};
+          ballotsSnap.forEach(doc=>{const b=doc.data(); if (b.candidateId) counts[b.candidateId]=(counts[b.candidateId]||0)+1;});
+          candidatesSnap.forEach(doc=>{
+            const c=doc.data();
+            if (categories[c.category]) totals[c.category].push({candidateId:doc.id,name:c.name,votes:counts[doc.id]||0});
+          });
+          const data={categories:totals,publishedAt:firebase.firestore.FieldValue.serverTimestamp()};
+          await state.db.collection('results').doc('main').set(data);
+          await state.db.collection('settings').doc('main').set({votingOpen:false,showResults:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+          hideNotice();
+          toast('Results published successfully.');
+        } catch (error) { console.error(error); showNotice('Could not publish results. Check your Firestore permissions.','error'); }
+      }
+
+      function makeQr() {
+        $('siteUrl').textContent=window.location.href.split('#')[0];
+        $('qrCode').innerHTML='';
+        if (window.QRCode) new QRCode($('qrCode'),{text:window.location.href.split('#')[0],width:132,height:132,colorDark:'#211b31',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+        else $('qrCode').textContent='QR code library unavailable';
+      }
+
+      async function loadResults() {
+        if (!state.settings.showResults && !state.isAdmin) { renderResults(null); return; }
+        try {
+          const snap=await state.db.collection('results').doc('main').get();
+          state.result=snap.exists?snap.data():null;
+          renderResults(state.result);
+        } catch(error) { console.warn('Could not load published results',error); renderResults(null); }
+      }
+
+      async function onSignedIn(user) {
+        state.user=user;
+        $('signInBtn').classList.add('hidden'); $('signInBtnMain').classList.add('hidden'); $('signOutBtn').classList.remove('hidden'); $('signInPanel').classList.add('hidden');
+        const adminSnap=await state.db.collection('admins').doc(user.uid).get();
+        state.isAdmin=adminSnap.exists;
+        const chip=$('userChip'); chip.classList.remove('hidden');
+        chip.innerHTML=`${user.photoURL?`<img src="${escapeHtml(user.photoURL)}" alt="">`:''}<span>${escapeHtml(user.displayName||'Signed in')}</span>`;
+        if (state.isAdmin) await ensureSettings();
+        await refreshMyBallots();
+        renderCandidates(); renderAdmin();
+        if (state.settings.showResults || state.isAdmin) await loadResults();
+      }
+
+      function onSignedOut() {
+        state.user=null; state.isAdmin=false; state.ballots={mr:false,ms:false};
+        $('signInBtn').classList.remove('hidden'); $('signInBtnMain').classList.remove('hidden'); $('signOutBtn').classList.add('hidden'); $('userChip').classList.add('hidden'); $('signInPanel').classList.remove('hidden');
+        $('adminPanel').classList.add('hidden');
+        renderCandidates();
+        if (!state.settings.showResults) $('resultsPanel').classList.add('hidden');
+      }
+
+      async function signIn() {
+        try { const provider=new firebase.auth.GoogleAuthProvider(); await state.auth.signInWithPopup(provider); }
+        catch(error) {
+          console.error(error);
+          if (error.code==='auth/popup-blocked') { try { await state.auth.signInWithRedirect(provider); } catch (redirectError) { console.error(redirectError); toast('Google sign-in could not open. Please try again.'); } }
+          else if (error.code==='auth/popup-closed-by-user') toast('Sign-in was closed before it finished. Please try again.');
+          else if (error.code==='auth/unauthorized-domain') toast('This website domain is not authorised in Firebase Authentication settings yet.');
+          else toast('Google sign-in failed. Please try again.');
+        }
+      }
+
+      async function init() {
+        makeQr(); $('siteUrl').textContent=window.location.href.split('#')[0];
+        const config=window.EVERMORE_FIREBASE_CONFIG;
+        if (!config || !config.apiKey || config.apiKey.includes('PASTE_')) {
+          $('statusText').textContent='Setup required';
+          $('mrCandidates').innerHTML='<div class="empty">The organiser must connect this website to Firebase before voting can begin.</div>';
+          $('msCandidates').innerHTML='<div class="empty">The organiser must connect this website to Firebase before voting can begin.</div>';
+          $('signInPanel').innerHTML='<strong>Website setup needed</strong><p class="muted">Add the Firebase web configuration to firebase-config.js, then publish the site. Follow the included README.</p>';
+          return;
+        }
+        try {
+          firebase.initializeApp(config);
+          state.auth=firebase.auth(); state.db=firebase.firestore();
+          await state.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+          await state.auth.getRedirectResult().catch(error=>console.warn('Redirect sign-in result:',error));
+          state.db.collection('settings').doc('main').onSnapshot(async snap=>{
+            if (snap.exists) state.settings={votingOpen:!!snap.data().votingOpen,showResults:!!snap.data().showResults};
+            else state.settings={votingOpen:false,showResults:false};
+            setStatus(); renderCandidates(); renderAdmin();
+            if (state.settings.showResults) await loadResults(); else if (!state.isAdmin) $('resultsPanel').classList.add('hidden');
+          },error=>console.warn('Settings listener:',error));
+          state.db.collection('candidates').onSnapshot(snap=>{
+            state.candidates=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+            renderCandidates(); if (state.isAdmin) renderAdminCandidates();
+          },error=>console.warn('Candidates listener:',error));
+          $('signInBtn').addEventListener('click',signIn); $('signInBtnMain').addEventListener('click',signIn);
+          $('signOutBtn').addEventListener('click',()=>state.auth.signOut());
+          $('candidateForm').addEventListener('submit',addCandidate);
+          $('toggleVotingBtn').addEventListener('click',toggleVoting);
+          $('publishResultsBtn').addEventListener('click',publishResults);
+          $('copyUrlBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('siteUrl').textContent);toast('Website link copied.');}catch(e){toast('Copy not available in this browser.');}});
+          state.auth.onAuthStateChanged(async user=>{try{if(user) await onSignedIn(user);else onSignedOut();}catch(error){console.error(error);toast('Could not load your account permissions.');}});
+        } catch(error) {
+          console.error(error); $('statusText').textContent='Connection error';
+          $('signInPanel').innerHTML='<strong>Could not connect to Firebase.</strong><p class="muted">Check your Firebase settings in firebase-config.js and reload the page.</p>';
+        }
+      }
+      document.addEventListener('DOMContentLoaded',init);
+    })();
+  </script>
+</body>
+</html>
